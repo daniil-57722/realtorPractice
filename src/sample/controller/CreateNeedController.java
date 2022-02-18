@@ -11,37 +11,20 @@ import sample.Constants;
 import sample.DBHandler;
 import sample.User;
 import sample.objects.Need;
-
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class CreateNeedController {
 
-    @FXML
-    private Button createButton;
-
-    @FXML
-    private TextField maxPriceField;
-
-    @FXML
-    private TextField minPriceField;
-
-    @FXML
-    private TextField nameField;
-
-    @FXML
-    private TextField phoneField;
-
-    @FXML
-    private ComboBox<?> realtorsList;
-
-    @FXML
-    private Label successLabel;
-
-    @FXML
-    private TextField typeOfRealty;
-
+    @FXML private Button createButton;
+    @FXML private TextField adressField;
+    @FXML private TextField maxPriceField;
+    @FXML private TextField minPriceField;
+    @FXML private TextField nameField;
+    @FXML private TextField phoneField;
+    @FXML private ComboBox<?> realtorsList;
+    @FXML private Label successLabel;
+    @FXML private TextField typeOfRealty;
     User user;
     DBHandler dbHandler;
     ObservableList realtors = FXCollections.observableArrayList();
@@ -60,14 +43,16 @@ public class CreateNeedController {
                     + " " + resultSet.getString("patronymic"));}
 
             realtorsList.setItems(realtors);
-
             createButton.setOnAction(event -> {
+                int minPriceInt = 0;
+                int maxPriceInt = 0;
                 String realtor = null;
                 String realtorid = null;
                 dbHandler = new DBHandler();
                 String name = nameField.getText().trim();
                 String phone = phoneField.getText().trim();
                 String realty = typeOfRealty.getText().trim();
+                String adress = adressField.getText().trim();
                 try {
                     realtor = realtorsList.getSelectionModel().getSelectedItem().toString().trim();
                     realtorid = realtor.substring(0,realtor.indexOf(")"));
@@ -77,12 +62,17 @@ public class CreateNeedController {
                 String minPrice = minPriceField.getText().trim();
                 String maxPrice = maxPriceField.getText().trim();
                 System.out.println(minPrice+" " +maxPrice);
-                if (name.equals("") || phone.equals("") || realty.equals("") || minPrice.equals("") || maxPrice.equals("")) {
+                if (name.equals("") || phone.equals("") || realty.equals("")
+                        || minPrice.equals("") || maxPrice.equals("") || adress.equals(" ")) {
                     successLabel.setText("Заполните поля!");
                 } else {
-                    int minPriceInt = Integer.parseInt(minPrice);
-                    int maxPriceInt = Integer.parseInt(maxPrice);
-                    Need need = new Need(name, phone, realty, minPriceInt, maxPriceInt, realtor, realtorid);
+                    try{
+                    minPriceInt = Integer.parseInt(minPrice);
+                    maxPriceInt = Integer.parseInt(maxPrice);}
+                    catch(Exception e){
+                        successLabel.setText("Укажите цену цифрами");
+                    }
+                    Need need = new Need(name, phone, realty, minPriceInt, maxPriceInt, realtor, realtorid, adress);
                     dbHandler.addNeed(need);
                     createButton.getScene().getWindow().hide();
                 }

@@ -7,9 +7,9 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="471.0" prefWidth="600.0" style="-fx-background-color: #193737;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controller.RealtorPersonalArea">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="471.0" prefWidth="622.0" style="-fx-background-color: #193737;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controller.RealtorPersonalArea">
    <children>
-      <AnchorPane layoutY="77.0" prefHeight="394.0" prefWidth="454.0" style="-fx-background-color: #FFFFFD;">
+      <AnchorPane layoutY="77.0" prefHeight="396.0" prefWidth="622.0" style="-fx-background-color: #FFFFFD;">
          <children>
             <TableView fx:id="OfferTable" layoutX="-1.0" layoutY="61.0" opacity="0.0" prefHeight="334.0" prefWidth="600.0">
                <columns>
@@ -23,16 +23,26 @@
                   <Font name="Monotype Corsiva" size="16.0" />
                </font>
             </Button>
-            <Button fx:id="createDealBtn" alignment="CENTER" contentDisplay="CENTER" layoutX="242.0" layoutY="14.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="113.0" style="-fx-background-color: #537072; -fx-background-radius: 20;" text="Создать сделку" textFill="#f1ffde">
+            <Button fx:id="createDealBtn" alignment="CENTER" contentDisplay="CENTER" layoutX="254.0" layoutY="14.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="113.0" style="-fx-background-color: #537072; -fx-background-radius: 20;" text="Создать сделку" textFill="#f1ffde">
                <font>
                   <Font name="Monotype Corsiva" size="16.0" />
                </font>
             </Button>
-            <Button fx:id="refreshBtn" alignment="CENTER" contentDisplay="CENTER" layoutX="413.0" layoutY="14.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="136.0" style="-fx-background-color: #537072; -fx-background-radius: 20;" text="Обновить списки" textFill="#f1ffde">
+            <Button fx:id="refreshBtn" alignment="CENTER" contentDisplay="CENTER" layoutX="463.0" layoutY="14.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="136.0" style="-fx-background-color: #537072; -fx-background-radius: 20;" text="Обновить списки" textFill="#f1ffde">
                <font>
                   <Font name="Monotype Corsiva" size="16.0" />
                </font>
             </Button>
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="2.0" layoutY="57.0" prefHeight="30.0" prefWidth="306.0" text="Потребности">
+               <font>
+                  <Font name="Monotype Corsiva" size="23.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="323.0" layoutY="55.0" prefHeight="34.0" prefWidth="298.0" text="Предложения">
+               <font>
+                  <Font name="Monotype Corsiva" size="23.0" />
+               </font>
+            </Label>
          </children>
       </AnchorPane>
       <Label layoutX="232.0" layoutY="8.0" prefHeight="62.0" prefWidth="136.0" text="Realtor" textFill="#f8ffed">
@@ -45,8 +55,8 @@
             <Font name="Monotype Corsiva" size="28.0" />
          </font>
       </Label>
-      <TableView fx:id="NeedTable" layoutX="-2.0" layoutY="132.0" prefHeight="294.0" prefWidth="298.0" />
-      <TableView fx:id="OfferTable" layoutX="302.0" layoutY="132.0" prefHeight="294.0" prefWidth="298.0" />
+      <TableView fx:id="NeedTable" layoutX="2.0" layoutY="162.0" prefHeight="294.0" prefWidth="305.0" />
+      <TableView fx:id="OfferTable" layoutX="322.0" layoutY="162.0" prefHeight="294.0" prefWidth="298.0" />
       <Button fx:id="exitBtn" alignment="CENTER" contentDisplay="CENTER" layoutX="508.0" layoutY="21.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="68.0" style="-fx-background-color: #537072; -fx-background-radius: 20;" text="Выйти" textFill="#f1ffde">
          <font>
             <Font name="Monotype Corsiva" size="16.0" />

@@ -4,7 +4,6 @@ public class Constants {
     public static final String USER_TABLE = "users";
     public static final String REALTOR_TABLE = "realtor";
 
-    public static final String USER_ID = "idusers";
     public static final String USER_NAME = "username";
     public static final String USER_PHONE = "phone";
     public static final String USER_EMAIL = "email";
@@ -18,6 +17,7 @@ public class Constants {
     public static final String REALTY = "realty";
     public static final String PRICE = "price";
     public static final String REALTOR = "realtor";
+    public static final String ADRESS = "adress";
 
     public static final String NEED_TABLE = "needs";
 
@@ -31,5 +31,7 @@ public class Constants {
     public static final String NEED_ID = "needid";
     public static final String OFFERER = "offerer";
     public static final String NEEDER = "needer";
+
+    public static final String ADMIN_TABLE = "admins";
 
 }

@@ -10,10 +10,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.util.Callback;
-import sample.Constants;
-import sample.DBHandler;
-import sample.Realtor;
-import sample.Swap;
+import sample.*;
 import sample.objects.Deal;
 import sample.objects.Need;
 
@@ -26,26 +23,13 @@ public class RealtorPersonalArea {
     private String needQuerry, offerQuerry;
     private DBHandler dbHandler;
     private ObservableList<ObservableList> data;
-    @FXML
-    private TableView<ObservableList> NeedTable;
-
-    @FXML
-    private TableView<ObservableList> OfferTable;
-
-    @FXML
-    private Button createDealBtn;
-
-    @FXML
-    private Label nameField;
-
-    @FXML
-    private Button refreshBtn;
-
-    @FXML
-    private Button exitBtn;
-
-    @FXML
-    private Button showBtn;
+    @FXML private TableView<ObservableList> NeedTable;
+    @FXML private TableView<ObservableList> OfferTable;
+    @FXML private Button createDealBtn;
+    @FXML private Label nameField;
+    @FXML private Button refreshBtn;
+    @FXML private Button exitBtn;
+    @FXML private Button showBtn;
 
     public void initData(Realtor realtor){
         this.realtor = realtor;
@@ -56,8 +40,8 @@ public class RealtorPersonalArea {
                 " WHERE " + Constants.REALTORID + " = " + realtor.getId();
         System.out.println(needQuerry);
         try {
-            fill(needQuerry, NeedTable);
-            fill(offerQuerry, OfferTable);
+            Main.fill(needQuerry, NeedTable);
+            Main.fill(offerQuerry, OfferTable);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -102,31 +86,5 @@ public class RealtorPersonalArea {
                 e.printStackTrace();
             }
         });
-    }
-
-    public void fill(String querry, TableView<ObservableList> table) throws SQLException {
-        table.getColumns().clear();
-        data = FXCollections.observableArrayList();
-        dbHandler = new DBHandler();
-        ResultSet resultSet = dbHandler.querry(querry);
-        for (int i = 0; i < resultSet.getMetaData().getColumnCount(); i++) {
-            final int j = i;
-            TableColumn col = new TableColumn(resultSet.getMetaData().getColumnName(i + 1));
-            col.setPrefWidth(298 / resultSet.getMetaData().getColumnCount());
-            col.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
-                public ObservableValue<String> call(TableColumn.CellDataFeatures<ObservableList, String> param) {
-                    return new SimpleStringProperty(param.getValue().get(j).toString());
-                }
-            });
-            table.getColumns().addAll(col);
-        }
-        while (resultSet.next()) {
-            ObservableList<String> row = FXCollections.observableArrayList();
-            for (int i = 1; i <= resultSet.getMetaData().getColumnCount(); i++) {
-                row.add(resultSet.getString(i));
-            }
-            data.add(row);
-        }
-        table.setItems(data);
     }
 }

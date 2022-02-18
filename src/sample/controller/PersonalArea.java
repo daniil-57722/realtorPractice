@@ -6,44 +6,28 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.Callback;
 import sample.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import sample.objects.Need;
 
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class PersonalArea {
-User user;
-DBHandler dbHandler;
-    @FXML
-    TableView<ObservableList> NeedTable;
+    User user;
+    DBHandler dbHandler;
 
-    @FXML
-    private Button createNeed;
-
-    @FXML
-    private Button deleteBtn;
-
-    @FXML
-    private Button createOffer;
-
-    @FXML
-    private Label nameField;
-
-    @FXML
-    private Button showButton;
-
-    @FXML
-    private Button showDealsBtn;
-
-    @FXML
-    private Button exitBtn;
+    @FXML TableView<ObservableList> NeedTable;
+    @FXML private Button createNeed;
+    @FXML private Button deleteBtn;
+    @FXML private Button createOffer;
+    @FXML private Label nameField;
+    @FXML private Button showButton;
+    @FXML private Button showDealsBtn;
+    @FXML private Button exitBtn;
 
     private ObservableList<ObservableList> data;
     String needQuerry;
@@ -53,14 +37,14 @@ DBHandler dbHandler;
 public void initData(User user){
     this.user = user;
     nameField.setText(user.getName());
-    needQuerry = "SELECT id, realty as недвижимость, minprice, maxprice, realtor FROM " + Constants.NEED_TABLE +
+    needQuerry = "SELECT id, realty as недвижимость, minprice, maxprice, realtor, adress FROM " + Constants.NEED_TABLE +
             " WHERE " + Constants.CLIENT + " = '" + user.getName() + "' AND " + Constants.USER_PHONE + "=" + user.getPhone();
-    offerQuerry = "SELECT id, realty, price, realtor FROM " + Constants.OFFER_TABLE +
+    offerQuerry = "SELECT id, realty, price, realtor, adress FROM " + Constants.OFFER_TABLE +
             " WHERE " + Constants.CLIENT + " = '" + user.getName() + "' AND " + Constants.USER_PHONE + "=" + user.getPhone();
     activeQuerry = offerQuerry;
     try {
         System.out.println(activeQuerry);
-        fill(activeQuerry);
+        Main.fill(activeQuerry, NeedTable);
     } catch (SQLException throwables) {
         throwables.printStackTrace();
     }
@@ -73,7 +57,6 @@ public void initialize(){
             e.printStackTrace();
         }
     });
-
     exitBtn.setOnAction(event ->{
         exitBtn.getScene().getWindow().hide();
         try {
@@ -89,7 +72,6 @@ public void initialize(){
             e.printStackTrace();
         }
     });
-
     showButton.setOnAction(event ->{
         if (activeQuerry.equals(needQuerry)){
             activeQuerry = offerQuerry;
@@ -98,7 +80,7 @@ public void initialize(){
             activeQuerry = needQuerry;
             showButton.setText("Показать предложения"); }
         try {
-            fill(activeQuerry);
+            Main.fill(activeQuerry, NeedTable);
         } catch (SQLException throwables) {
             throwables.printStackTrace(); }
     });
@@ -121,30 +103,4 @@ public void initialize(){
         }
     });
 }
-
-public void fill(String querry) throws SQLException {
-    NeedTable.getColumns().clear();
-    data = FXCollections.observableArrayList();
-    dbHandler = new DBHandler();
-    ResultSet resultSet = dbHandler.querry(querry);
-    for (int i = 0; i < resultSet.getMetaData().getColumnCount(); i++) {
-        final int j = i;
-        TableColumn col = new TableColumn(resultSet.getMetaData().getColumnName(i + 1));
-        col.setMinWidth(599 / resultSet.getMetaData().getColumnCount());
-        col.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
-            public ObservableValue<String> call(TableColumn.CellDataFeatures<ObservableList, String> param) {
-                return new SimpleStringProperty(param.getValue().get(j).toString());
-            }
-        });
-        NeedTable.getColumns().addAll(col);
-    }
-    while (resultSet.next()) {
-        ObservableList<String> row = FXCollections.observableArrayList();
-        for (int i = 1; i <= resultSet.getMetaData().getColumnCount(); i++) {
-            row.add(resultSet.getString(i));
-        }
-        data.add(row);
-    }
-    NeedTable.setItems(data);}
-
 }

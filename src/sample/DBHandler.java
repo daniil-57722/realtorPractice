@@ -76,7 +76,7 @@ public class DBHandler extends Config {
                 "(" + Constants.CLIENT + "," + Constants.PHONE +
                 "," + Constants.REALTY + "," + Constants.MINPRICE +
                 "," + Constants.MAXPRICE + "," + Constants.REALTOR +
-                ","+ Constants.REALTORID+")VALUES(?,?,?,?,?,?,?)";
+                ","+ Constants.REALTORID+ ","+Constants.ADRESS +")VALUES(?,?,?,?,?,?,?,?)";
         try {
             PreparedStatement preparedStatement = getDbConnection().prepareStatement(request);
             preparedStatement.setString(1, need.getClient());
@@ -86,6 +86,7 @@ public class DBHandler extends Config {
             preparedStatement.setInt(5, need.getMaxPrice());
             preparedStatement.setString(6,need.getRealtor());
             preparedStatement.setString(7, need.getRealtorid());
+            preparedStatement.setString(8,need.getAdress());
             preparedStatement.executeUpdate();
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();

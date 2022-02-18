@@ -8,6 +8,9 @@ public class Need {
     int minPrice;
     int maxPrice;
     String realtorid;
+    String adress;
+
+    public String getAdress() { return adress; }
 
     public String getClient() {
         return client;
@@ -33,11 +36,9 @@ public class Need {
         return maxPrice;
     }
 
-    public String getRealtorid() {
-        return realtorid;
-    }
+    public String getRealtorid() { return realtorid; }
 
-    public Need(String client, String phone, String type, int minPrice, int maxPrice, String realtor, String realtorid){
+    public Need(String client, String phone, String type, int minPrice, int maxPrice, String realtor, String realtorid, String adress){
         this.client = client;
         this.phone = phone;
         this.type = type;
@@ -45,5 +46,6 @@ public class Need {
         this.maxPrice = maxPrice;
         this.realtor = realtor;
         this.realtorid = realtorid;
+        this.adress = adress;
     }
 }
