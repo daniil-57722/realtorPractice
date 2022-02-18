@@ -25,6 +25,7 @@ public class Main extends Application {
     public static void main(String[] args) {
         launch(args);
     }
+
     public static void fill(String querry, TableView<ObservableList> table) throws SQLException {
         DBHandler dbHandler = new DBHandler();
         table.getColumns().clear();
@@ -34,7 +35,6 @@ public class Main extends Application {
         for (int i = 0; i < resultSet.getMetaData().getColumnCount(); i++) {
             final int j = i;
             TableColumn col = new TableColumn(resultSet.getMetaData().getColumnName(i + 1));
-            col.setPrefWidth(599 / resultSet.getMetaData().getColumnCount());
             col.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
                 public ObservableValue<String> call(TableColumn.CellDataFeatures<ObservableList, String> param) {
                     return new SimpleStringProperty(param.getValue().get(j).toString());

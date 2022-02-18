@@ -15,6 +15,11 @@
                   <Font name="Monotype Corsiva" size="39.0" />
                </font>
             </Label>
+            <Button fx:id="deleteBtn" alignment="CENTER" contentDisplay="CENTER" disable="true" layoutX="466.0" layoutY="10.0" mnemonicParsing="false" opacity="0.0" prefHeight="34.0" prefWidth="86.0" style="-fx-background-color: #537072; -fx-background-radius: 20;" text="Удалить" textFill="#f1ffde">
+               <font>
+                  <Font name="Monotype Corsiva" size="16.0" />
+               </font>
+            </Button>
          </children>
       </AnchorPane>
       <Label layoutX="232.0" layoutY="8.0" prefHeight="62.0" prefWidth="136.0" text="Realtor" textFill="#f8ffed">

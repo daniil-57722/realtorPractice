@@ -1,28 +1,19 @@
 package sample.controller;
 
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.util.Callback;
 import sample.*;
 import sample.objects.Deal;
-import sample.objects.Need;
-
 import java.io.IOException;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class RealtorPersonalArea {
     private Realtor realtor;
     private String needQuerry, offerQuerry;
     private DBHandler dbHandler;
-    private ObservableList<ObservableList> data;
     @FXML private TableView<ObservableList> NeedTable;
     @FXML private TableView<ObservableList> OfferTable;
     @FXML private Button createDealBtn;
@@ -34,9 +25,9 @@ public class RealtorPersonalArea {
     public void initData(Realtor realtor){
         this.realtor = realtor;
         nameField.setText(realtor.getName());
-        needQuerry = "SELECT id, client, phone, realty, minprice, maxprice FROM " + Constants.NEED_TABLE +
+        needQuerry = "SELECT id, client, phone, realty, address, minprice, maxprice FROM " + Constants.NEED_TABLE +
                 " WHERE " + Constants.REALTORID + " = " + realtor.getId();
-        offerQuerry = "SELECT id, client, phone, realty, price FROM " + Constants.OFFER_TABLE +
+        offerQuerry = "SELECT id, client, phone, realty, address, price FROM " + Constants.OFFER_TABLE +
                 " WHERE " + Constants.REALTORID + " = " + realtor.getId();
         System.out.println(needQuerry);
         try {
@@ -84,6 +75,14 @@ public class RealtorPersonalArea {
                 Swap.openAnotherWindow("view/authorization.fxml");
             } catch (IOException e) {
                 e.printStackTrace();
+            }
+        });
+        refreshBtn.setOnAction(event ->{
+            try {
+                Main.fill(needQuerry, NeedTable);
+                Main.fill(offerQuerry, OfferTable);
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
             }
         });
     }

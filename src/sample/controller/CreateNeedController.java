@@ -41,7 +41,6 @@ public class CreateNeedController {
         while (resultSet.next()) {
             realtors.add(resultSet.getString("id") + ") " + resultSet.getString("firstname")
                     + " " + resultSet.getString("patronymic"));}
-
             realtorsList.setItems(realtors);
             createButton.setOnAction(event -> {
                 int minPriceInt = 0;
