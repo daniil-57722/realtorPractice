@@ -46,7 +46,7 @@
             <Font name="Monotype Corsiva" size="28.0" />
          </font>
       </Label>
-      <TableView fx:id="NeedTable" layoutX="-2.0" layoutY="140.0" prefHeight="294.0" prefWidth="600.0" />
+      <TableView fx:id="NeedTable" layoutX="3.0" layoutY="140.0" prefHeight="294.0" prefWidth="593.0" />
       <Button fx:id="exitBtn" alignment="CENTER" contentDisplay="CENTER" layoutX="481.0" layoutY="22.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="66.0" style="-fx-background-color: #537072; -fx-background-radius: 20;" text="Выйти" textFill="#f1ffde">
          <font>
             <Font name="Monotype Corsiva" size="16.0" />

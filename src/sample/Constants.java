@@ -3,7 +3,10 @@ package sample;
 public class Constants {
     public static final String USER_TABLE = "users";
     public static final String REALTOR_TABLE = "realtor";
-
+    public static final String FIRSTNAME = "firstname";
+    public static final String LASTNAME = "lastname";
+    public static final String PATRONYMIC = "patronymic";
+    public static final String COMISSION = "comission";
     public static final String USER_NAME = "username";
     public static final String USER_PHONE = "phone";
     public static final String USER_EMAIL = "email";
@@ -13,11 +16,12 @@ public class Constants {
     public static final String OFFER_TABLE = "offers";
 
     public static final String CLIENT = "client";
+    public static final String CLIENTID = "clientid";
     public static final String PHONE = "phone";
     public static final String REALTY = "realty";
     public static final String PRICE = "price";
     public static final String REALTOR = "realtor";
-    public static final String ADRESS = "adress";
+    public static final String ADRESS = "address";
 
     public static final String NEED_TABLE = "needs";
 

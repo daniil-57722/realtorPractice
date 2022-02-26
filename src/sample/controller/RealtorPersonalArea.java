@@ -7,6 +7,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import sample.*;
 import sample.objects.Deal;
+import sample.objects.Realtor;
+
 import java.io.IOException;
 import java.sql.SQLException;
 
@@ -25,10 +27,12 @@ public class RealtorPersonalArea {
     public void initData(Realtor realtor){
         this.realtor = realtor;
         nameField.setText(realtor.getName());
-        needQuerry = "SELECT id, client, phone, realty, address, minprice, maxprice FROM " + Constants.NEED_TABLE +
-                " WHERE " + Constants.REALTORID + " = " + realtor.getId();
-        offerQuerry = "SELECT id, client, phone, realty, address, price FROM " + Constants.OFFER_TABLE +
-                " WHERE " + Constants.REALTORID + " = " + realtor.getId();
+        needQuerry = "SELECT id, (SELECT username FROM users WHERE clientid = id) as клиент, (SELECT phone FROM users WHERE " +
+                "clientid = id) as 'номер тел', realty as недвижимость, address as адрес, minprice as 'мин. цена', maxprice" +
+                " as 'макс. цена' FROM " + Constants.NEED_TABLE + " WHERE " + Constants.REALTORID + " = " + realtor.getId();
+        offerQuerry = "SELECT id, (SELECT username FROM users WHERE clientid = id) as клиент,(SELECT phone FROM users" +
+                " WHERE clientid = id) as 'номер тел', realty as недвижимость, address as адрес, price as цена FROM " +
+                Constants.OFFER_TABLE + " where " + Constants.REALTORID + " = " + realtor.getId();
         System.out.println(needQuerry);
         try {
             Main.fill(needQuerry, NeedTable);
@@ -50,7 +54,7 @@ public class RealtorPersonalArea {
                     selectedOffer.get(4).toString(),
                     selectedOffer.get(1).toString() + " "+ selectedOffer.get(2),
                     selectedNeed.get(1).toString() +" "+ selectedNeed.get(2),
-                    realtor.getId(), realtor.getName() +" "+ realtor.getLastname());
+                    Integer.parseInt(realtor.getId()), realtor.getName() +" "+ realtor.getLastname());
             dbHandler = new DBHandler();
             try {
                 dbHandler.addDeal(deal);

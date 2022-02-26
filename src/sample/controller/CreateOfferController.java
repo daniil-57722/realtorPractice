@@ -9,7 +9,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import sample.Constants;
 import sample.DBHandler;
-import sample.User;
+import sample.objects.User;
 import sample.objects.Offer;
 
 import java.sql.ResultSet;
@@ -24,6 +24,7 @@ public class CreateOfferController {
     @FXML private TextField priceField;
     @FXML private TextField typeOfRealty;
     @FXML private Label successLabel;
+    @FXML private TextField adressField;
 
     DBHandler dbHandler;
     ObservableList realtors = FXCollections.observableArrayList();
@@ -46,12 +47,18 @@ public class CreateOfferController {
             String name = nameField.getText().trim();
             String phone = phoneField.getText().trim();
             String realty = typeOfRealty.getText().trim();
-            realtor = realtorsList.getSelectionModel().getSelectedItem().toString().trim();
+            String address = adressField.getText().trim();
+            try {
+                realtor = realtorsList.getSelectionModel().getSelectedItem().toString().trim();
+            } catch (Exception e) {
+                successLabel.setText("Выберите риэлтора"); }
             String price = priceField.getText().trim();
-            String success = isFill(name, realtor, phone, realty, price);
+            String success = isFill(name, realtor, phone, realty, price, address);
+            System.out.println(success);
             if (success.equals("Успех")){
                 int priceInt = Integer.parseInt(price);
-                Offer offer = new Offer(name, phone, realty, priceInt, realtor.substring(realtor.indexOf(")")+2),realtor.substring(0,realtor.indexOf(")")) );
+                Offer offer = new Offer(user.getId(), phone, realty, priceInt, realtor.substring(realtor.indexOf(")")+2),
+                        Integer.parseInt(realtor.substring(0,realtor.indexOf(")"))), address);
                 System.out.println(realtor.substring(realtor.indexOf(")"))+" "+realtor.substring(0,realtor.indexOf(")")));
                 dbHandler.addOffer(offer);
             }
@@ -60,10 +67,10 @@ public class CreateOfferController {
             }
         });
     }
-    public String isFill (String name, String realtor, String phone, String realty, String price){
+    public String isFill (String name, String realtor, String phone, String realty, String price, String address){
         dbHandler = new DBHandler();
-        	if (realtor != null){
-            	if (name.equals("") || phone.equals("") || realty.equals("") || price.equals("")) {
+        	if (realtor != null && !realtor.equals("")){
+            	if (name.equals("") || phone.equals("") || realty.equals("") || price.equals("") || address.equals("")) {
                 	return("Заполните поля!"); }
             	else {
             	    try {

@@ -1,8 +1,6 @@
 package sample;
 
-import sample.objects.Deal;
-import sample.objects.Need;
-import sample.objects.Offer;
+import sample.objects.*;
 
 import java.sql.*;
 
@@ -21,8 +19,7 @@ public class DBHandler extends Config {
 
     //Метод, поверяющий есть ли такой логин и пароль в бд
     public ResultSet checkLoginAndPass(String login, String password, String table) {
-        String request = "SELECT * FROM " + table + " WHERE login = '" + login +"' AND password = '" + password +"'";
-        System.out.println(request);
+        String request = "SELECT * FROM " + table + " WHERE login = '" + login + "' AND password = '" + password + "'";
         try {
             statement = getDbConnection().createStatement();
             result = statement.executeQuery(request);
@@ -33,6 +30,7 @@ public class DBHandler extends Config {
         return result;
     }
 
+    //Зегистрация пользователя
     public void signUpUser(User user) {
         String request = "INSERT INTO " + Constants.USER_TABLE +
                 "(" + Constants.USER_NAME + "," + Constants.USER_PHONE +
@@ -52,31 +50,35 @@ public class DBHandler extends Config {
             e.printStackTrace();
         }
     }
+
+    //Создание предложения
     public void addOffer(Offer offer) {
         String request = "INSERT INTO " + Constants.OFFER_TABLE +
-                "(" + Constants.CLIENT + "," + Constants.PHONE +
+                "(" + Constants.CLIENTID + "," + Constants.PHONE +
                 "," + Constants.REALTY + "," + Constants.PRICE +
-                "," + Constants.REALTOR +","+Constants.REALTORID+ ")VALUES(?,?,?,?,?,?)";
+                "," + Constants.REALTORID + ","+ Constants.ADRESS
+                + ")VALUES(?,?,?,?,?,?)";
         try {
             PreparedStatement preparedStatement = getDbConnection().prepareStatement(request);
             preparedStatement.setString(1, offer.getClient());
             preparedStatement.setString(2, offer.getPhone());
             preparedStatement.setString(3, offer.getType());
             preparedStatement.setInt(4, offer.getPrice());
-            preparedStatement.setString(5,offer.getRealtor());
-            preparedStatement.setString(6,offer.getRealtorid());
+            preparedStatement.setInt(5, offer.getRealtorid());
+            preparedStatement.setString(6, offer.getAddress());
             preparedStatement.executeUpdate();
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
 
+    //Создание потребности
     public void addNeed(Need need) {
         String request = "INSERT INTO " + Constants.NEED_TABLE +
-                "(" + Constants.CLIENT + "," + Constants.PHONE +
+                "(" + Constants.CLIENTID + "," + Constants.PHONE +
                 "," + Constants.REALTY + "," + Constants.MINPRICE +
-                "," + Constants.MAXPRICE + "," + Constants.REALTOR +
-                ","+ Constants.REALTORID+ ","+Constants.ADRESS +")VALUES(?,?,?,?,?,?,?,?)";
+                "," + Constants.MAXPRICE + "," + Constants.REALTORID +
+                "," + Constants.ADRESS + ")VALUES(?,?,?,?,?,?,?)";
         try {
             PreparedStatement preparedStatement = getDbConnection().prepareStatement(request);
             preparedStatement.setString(1, need.getClient());
@@ -84,62 +86,80 @@ public class DBHandler extends Config {
             preparedStatement.setString(3, need.getType());
             preparedStatement.setInt(4, need.getMinPrice());
             preparedStatement.setInt(5, need.getMaxPrice());
-            preparedStatement.setString(6,need.getRealtor());
-            preparedStatement.setString(7, need.getRealtorid());
-            preparedStatement.setString(8,need.getAdress());
+            preparedStatement.setInt(6, need.getRealtorid());
+            preparedStatement.setString(7, need.getAdress());
             preparedStatement.executeUpdate();
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
 
+    //Создание сделки
     public void addDeal(Deal deal) throws SQLException, ClassNotFoundException {
         String request = "INSERT INTO " + Constants.DEAL_TABLE +
                 "(" + Constants.OFFER_ID + "," + Constants.NEED_ID +
                 "," + Constants.REALTY + "," + Constants.PRICE +
                 "," + Constants.OFFERER + "," + Constants.NEEDER +
-                "," + Constants.REALTORID + "," + Constants.REALTOR+
+                "," + Constants.REALTORID + "," + Constants.REALTOR +
                 ")VALUES(?,?,?,?,?,?,?,?)";
         try {
             PreparedStatement preparedStatement = getDbConnection().prepareStatement(request);
             preparedStatement.setString(1, deal.getIdOffer());
-            System.out.println(deal.getIdOffer());
             preparedStatement.setString(2, deal.getIdNeed());
             preparedStatement.setString(3, deal.getRealty());
             preparedStatement.setInt(4, Integer.parseInt(deal.getPrice()));
             preparedStatement.setString(5, deal.getOfferer());
             preparedStatement.setString(6, deal.getNeeder());
-            preparedStatement.setString(7, deal.getRealtorId());
-            preparedStatement.setString(8,deal.getRealtorName());
+            preparedStatement.setInt(7, deal.getRealtorId());
+            preparedStatement.setString(8, deal.getRealtorName());
+            preparedStatement.executeUpdate();
+        } catch (SQLException | ClassNotFoundException | NumberFormatException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // удаление по id
+    public void deleteRow(String table, String id) {
+        try {
+            statement = getDbConnection().createStatement();
+            statement.executeUpdate("DELETE FROM " + table + " WHERE id = " + id);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Выполнение несложных запросов
+    public ResultSet querry(String querry) {
+        try {
+            statement = getDbConnection().createStatement();
+            result = statement.executeQuery(querry);
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    public void newRealtor(Realtor realtor) {
+        String request = "INSERT INTO " + Constants.REALTOR +
+                "(" + Constants.FIRSTNAME + "," + Constants.LASTNAME +
+                "," + Constants.PATRONYMIC + "," + Constants.COMISSION +
+                "," + Constants.USER_LOGIN + "," + Constants.USER_PASSWORD +
+                ")VALUES(?,?,?,?,?,?)";
+        try {
+            PreparedStatement preparedStatement = getDbConnection().prepareStatement(request);
+            preparedStatement.setString(1, realtor.getName());
+            preparedStatement.setString(2, realtor.getLastname());
+            preparedStatement.setString(3, realtor.getPatronymic());
+            preparedStatement.setString(4, realtor.getComission());
+            preparedStatement.setString(5, realtor.getLogin());
+            preparedStatement.setString(6, realtor.getPassword());
             preparedStatement.executeUpdate();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
         }
     }
-
-    public void deleteRow(String table, String id){
-        try{
-            statement = getDbConnection().createStatement();
-            statement.executeUpdate("DELETE FROM " + table + " WHERE id = "+id);
-            System.out.println("DELETE FROM " + table + " WHERE id = "+id);
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public ResultSet querry(String querry)  {
-        try {
-            statement = getDbConnection().createStatement();
-            result = statement.executeQuery(querry);
-        } catch (SQLException | ClassNotFoundException e) {
-            e.printStackTrace(); }
-        return  result;
-    }
-
 }

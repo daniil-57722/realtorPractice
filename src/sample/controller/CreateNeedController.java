@@ -9,7 +9,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import sample.Constants;
 import sample.DBHandler;
-import sample.User;
+import sample.objects.User;
 import sample.objects.Need;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -65,17 +65,19 @@ public class CreateNeedController {
                         || minPrice.equals("") || maxPrice.equals("") || adress.equals(" ")) {
                     successLabel.setText("Заполните поля!");
                 } else {
-                    try{
-                    minPriceInt = Integer.parseInt(minPrice);
-                    maxPriceInt = Integer.parseInt(maxPrice);}
-                    catch(Exception e){
-                        successLabel.setText("Укажите цену цифрами");
+                    if (realtor != null) {
+                        try {
+                            minPriceInt = Integer.parseInt(minPrice);
+                            maxPriceInt = Integer.parseInt(maxPrice);
+                        } catch (Exception e) {
+                            successLabel.setText("Укажите цену цифрами");
+                        }
+                        Need need = new Need(user.getId(), phone, realty, minPriceInt, maxPriceInt, realtor,
+                                Integer.parseInt(realtorid), adress);
+                        dbHandler.addNeed(need);
+                        createButton.getScene().getWindow().hide();
                     }
-                    Need need = new Need(name, phone, realty, minPriceInt, maxPriceInt, realtor, realtorid, adress);
-                    dbHandler.addNeed(need);
-                    createButton.getScene().getWindow().hide();
                 }
             });
         }
     }
-

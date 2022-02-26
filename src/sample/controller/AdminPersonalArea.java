@@ -88,5 +88,12 @@ public class AdminPersonalArea {
                 e.printStackTrace();
             }
         });
+        newRealtorBtn.setOnAction(event ->{
+            try {
+                Swap.openAnotherWindow("view/newRealtor.fxml");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
     }
 }

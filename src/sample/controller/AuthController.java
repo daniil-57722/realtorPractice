@@ -3,6 +3,8 @@ package sample.controller;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import sample.*;
+import sample.objects.Realtor;
+import sample.objects.User;
 
 import java.io.IOException;
 import java.sql.ResultSet;

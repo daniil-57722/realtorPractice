@@ -8,11 +8,11 @@ public class Deal {
     String price;
     String offerer;
     String needer;
-    String realtorId;
+    int realtorId;
     String realtorName;
 
     public Deal(String idOffer, String idNeed, String realty, String price,
-                String offerer, String needer, String realtorId, String realtorName) {
+                String offerer, String needer, int realtorId, String realtorName) {
         this.idOffer = idOffer;
         this.idNeed = idNeed;
         this.realty = realty;
@@ -23,7 +23,7 @@ public class Deal {
         this.realtorName = realtorName;
     }
 
-    public String getRealtorId() { return realtorId; }
+    public int getRealtorId() { return realtorId; }
 
     public String getRealtorName() { return realtorName; }
 

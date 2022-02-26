@@ -1,19 +1,14 @@
 package sample.controller;
 
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.util.Callback;
 import sample.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import sample.objects.User;
 
 import java.io.IOException;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class PersonalArea {
@@ -37,10 +32,12 @@ public class PersonalArea {
 public void initData(User user){
     this.user = user;
     nameField.setText(user.getName());
-    needQuerry = "SELECT id, realty as недвижимость, minprice, maxprice, realtor, adress FROM " + Constants.NEED_TABLE +
-            " WHERE " + Constants.CLIENT + " = '" + user.getName() + "' AND " + Constants.USER_PHONE + "=" + user.getPhone();
-    offerQuerry = "SELECT id, realty, price, realtor, adress FROM " + Constants.OFFER_TABLE +
-            " WHERE " + Constants.CLIENT + " = '" + user.getName() + "' AND " + Constants.USER_PHONE + "=" + user.getPhone();
+    needQuerry = "SELECT id, realty as недвижимость, minprice as 'мин. цена', maxprice as 'макс. цена'," +
+            " (SELECT concat (firstname, ' ',lastname) FROM realtor WHERE id = 1) as риелтор, " +
+            "address as адрес FROM " + Constants.NEED_TABLE + " WHERE " + Constants.CLIENTID + " = " + user.getId();
+    offerQuerry = "SELECT id, realty as недвижимость, price as цена, (SELECT concat (firstname, ' ',lastname) FROM" +
+            " realtor WHERE id = 1) as риелтор, address as адрес FROM " + Constants.OFFER_TABLE + " WHERE "
+            + Constants.CLIENTID + " = " + user.getId();
     activeQuerry = offerQuerry;
     try {
         System.out.println(activeQuerry);

@@ -5,21 +5,23 @@ public class Offer {
     String phone;
     String type;
     String realtor;
-    String realtorid;
+    int realtorid;
+    String address;
     int price;
 
-
-    public String getRealtorid() {
-        return realtorid;
-    }
-
-    public Offer(String client, String phone, String type, int price, String realtor, String realtorid){
+    public Offer(String client, String phone, String type, int price, String realtor, int realtorid, String address){
         this.client = client;
         this.phone = phone;
         this.type = type;
         this.price = price;
         this.realtor = realtor;
         this.realtorid = realtorid;
+        this.address = address;
+    }
+    public String getAddress() { return address; }
+
+    public int getRealtorid() {
+        return realtorid;
     }
 
     public String getClient() {

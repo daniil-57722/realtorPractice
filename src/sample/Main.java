@@ -34,7 +34,7 @@ public class Main extends Application {
         ResultSet resultSet = dbHandler.querry(querry);
         for (int i = 0; i < resultSet.getMetaData().getColumnCount(); i++) {
             final int j = i;
-            TableColumn col = new TableColumn(resultSet.getMetaData().getColumnName(i + 1));
+            TableColumn col = new TableColumn(resultSet.getMetaData().getColumnLabel(i + 1));
             col.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
                 public ObservableValue<String> call(TableColumn.CellDataFeatures<ObservableList, String> param) {
                     return new SimpleStringProperty(param.getValue().get(j).toString());

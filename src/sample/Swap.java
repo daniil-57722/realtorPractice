@@ -5,6 +5,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import sample.controller.*;
+import sample.objects.Realtor;
+import sample.objects.User;
+
 import java.io.IOException;
 import java.sql.SQLException;
 
