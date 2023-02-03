@@ -1,53 +1,33 @@
 package sample.objects;
 
+/**
+ * класс для сделок
+ */
 public class Deal {
 
-    String idOffer;
-    String idNeed;
+    String idOfferer;
+    String idNeeder;
     String realty;
     String price;
-    String offerer;
-    String needer;
     int realtorId;
-    String realtorName;
+    String address;
 
-    public Deal(String idOffer, String idNeed, String realty, String price,
-                String offerer, String needer, int realtorId, String realtorName) {
-        this.idOffer = idOffer;
-        this.idNeed = idNeed;
+    public Deal(String idOfferer, String idNeeder, String realty, String address, String price, int realtorId) {
+        this.idOfferer = idOfferer;
+        this.address = address;
+        this.idNeeder = idNeeder;
         this.realty = realty;
         this.price = price;
-        this.offerer = offerer;
-        this.needer = needer;
         this.realtorId = realtorId;
-        this.realtorName = realtorName;
     }
-
+    public String getAddress() { return address; }
     public int getRealtorId() { return realtorId; }
-
-    public String getRealtorName() { return realtorName; }
-
-    public String getIdOffer() {
-        return idOffer;
-    }
-
-    public String getIdNeed() {
-        return idNeed;
-    }
-
     public String getRealty() {
         return realty;
     }
-
     public String getPrice() {
         return price;
     }
-
-    public String getOfferer() {
-        return offerer;
-    }
-
-    public String getNeeder() {
-        return needer;
-    }
+    public String getIdOfferer() { return idOfferer; }
+    public String getIdNeeder() { return idNeeder; }
 }

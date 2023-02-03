@@ -7,42 +7,28 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import sample.*;
 import sample.objects.User;
-
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class RegistrationController {
 
-    @FXML
-    private Button logInButton;
+    @FXML private Button logInButton;
+    @FXML private TextField registrationEmailField;
+    @FXML private TextField registrationLoginField;
+    @FXML private TextField registrationNameField;
+    @FXML private PasswordField registrationPasswordField;
+    @FXML private TextField registrationPhoneField;
+    @FXML private Button signUpButton;
+    @FXML private Label SuccesLabel;
 
-    @FXML
-    private TextField registrationEmailField;
-
-    @FXML
-    private TextField registrationLoginField;
-
-    @FXML
-    private TextField registrationNameField;
-
-    @FXML
-    private PasswordField registrationPasswordField;
-
-    @FXML
-    private TextField registrationPhoneField;
-
-    @FXML
-    private Button signUpButton;
-
-    @FXML
-    private Label SuccesLabel;
-
-
+    /**
+     * init for controller
+     */
     @FXML
     void initialize() {
         signUpButton.setOnAction(event ->{
-            DBHandler dbHandler = new DBHandler();
+            DBHandler dbHandler = DBHandler.getDBHandler();
             String name = registrationNameField.getText();
             String phone = registrationPhoneField.getText();
             String email = registrationEmailField.getText();
@@ -68,14 +54,10 @@ public class RegistrationController {
             }
         }
         });
-        //При нажатии на кнопку войти
+
         logInButton.setOnAction(event -> {
             logInButton.getScene().getWindow().hide();
-            try {
-                Swap.openAnotherWindow("view/authorization.fxml");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            Swap.openAnotherWindow("view/authorization.fxml");
         });
     }
 }

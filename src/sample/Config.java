@@ -1,5 +1,8 @@
 package sample;
 
+/**
+ * configs for db
+ */
 public class Config {
     protected String dbHost = "127.0.0.1";
     protected String dbPort = "3306";

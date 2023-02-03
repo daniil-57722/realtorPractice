@@ -21,22 +21,27 @@ public class CreateNeedController {
     @FXML private TextField maxPriceField;
     @FXML private TextField minPriceField;
     @FXML private TextField nameField;
-    @FXML private TextField phoneField;
     @FXML private ComboBox<?> realtorsList;
     @FXML private Label successLabel;
     @FXML private TextField typeOfRealty;
+
     User user;
     DBHandler dbHandler;
     ObservableList realtors = FXCollections.observableArrayList();
 
+    /**
+     * preloading
+     * @param user current user
+     */
     public void initData(User user) {
         nameField.appendText(user.getName());
         this.user = user;
-        phoneField.appendText(user.getPhone());
     }
-
+    /**
+     * init for controller
+     */
     public void initialize() throws SQLException {
-        dbHandler = new DBHandler();
+        dbHandler = DBHandler.getDBHandler();
         ResultSet resultSet = dbHandler.querry("Select * from " + Constants.REALTOR_TABLE);
         while (resultSet.next()) {
             realtors.add(resultSet.getString("id") + ") " + resultSet.getString("firstname")
@@ -47,9 +52,8 @@ public class CreateNeedController {
                 int maxPriceInt = 0;
                 String realtor = null;
                 String realtorid = null;
-                dbHandler = new DBHandler();
+                dbHandler = DBHandler.getDBHandler();
                 String name = nameField.getText().trim();
-                String phone = phoneField.getText().trim();
                 String realty = typeOfRealty.getText().trim();
                 String adress = adressField.getText().trim();
                 try {
@@ -57,11 +61,12 @@ public class CreateNeedController {
                     realtorid = realtor.substring(0,realtor.indexOf(")"));
                     realtor = realtor.substring(realtor.indexOf(")")+2);
                 } catch (Exception e) {
-                    successLabel.setText("Выберите риэлтора"); }
+                    successLabel.setText("Выберите риэлтора");
+                }
                 String minPrice = minPriceField.getText().trim();
                 String maxPrice = maxPriceField.getText().trim();
                 System.out.println(minPrice+" " +maxPrice);
-                if (name.equals("") || phone.equals("") || realty.equals("")
+                if (name.equals("") || realty.equals("")
                         || minPrice.equals("") || maxPrice.equals("") || adress.equals(" ")) {
                     successLabel.setText("Заполните поля!");
                 } else {
@@ -72,10 +77,9 @@ public class CreateNeedController {
                         } catch (Exception e) {
                             successLabel.setText("Укажите цену цифрами");
                         }
-                        Need need = new Need(user.getId(), phone, realty, minPriceInt, maxPriceInt, realtor,
+                        Need need = new Need(user.getId(), realty, minPriceInt, maxPriceInt,
                                 Integer.parseInt(realtorid), adress);
                         dbHandler.addNeed(need);
-                        createButton.getScene().getWindow().hide();
                     }
                 }
             });

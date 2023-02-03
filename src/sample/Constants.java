@@ -15,9 +15,7 @@ public class Constants {
 
     public static final String OFFER_TABLE = "offers";
 
-    public static final String CLIENT = "client";
     public static final String CLIENTID = "clientid";
-    public static final String PHONE = "phone";
     public static final String REALTY = "realty";
     public static final String PRICE = "price";
     public static final String REALTOR = "realtor";
@@ -31,10 +29,8 @@ public class Constants {
 
     public static final String DEAL_TABLE = "deals";
 
-    public static final String OFFER_ID = "offerid";
-    public static final String NEED_ID = "needid";
-    public static final String OFFERER = "offerer";
-    public static final String NEEDER = "needer";
+    public static final String OFFERER = "offererid";
+    public static final String NEEDER = "neederid";
 
     public static final String ADMIN_TABLE = "admins";
 

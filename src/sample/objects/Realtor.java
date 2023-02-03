@@ -18,16 +18,12 @@ public class Realtor {
         this.password = password;
     }
 
-    public Realtor(String id, String name, String lastname, String comission, String patronimic, String login, String password) {
+    public Realtor(String id, String name, String lastname) {
         this.name = name;
         this.lastname = lastname;
-        this.patronymic = patronymic;
-        this.comission = comission;
-        this.login = login;
-        this.password = password;
+
         this.id = id;
     }
-
     public String getId() { return id; }
     public String getComission() { return comission; }
     public String getName() {

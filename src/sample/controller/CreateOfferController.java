@@ -11,12 +11,12 @@ import sample.Constants;
 import sample.DBHandler;
 import sample.objects.User;
 import sample.objects.Offer;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class CreateOfferController {
     User user;
+    String realtor;
     @FXML private ComboBox<?> realtorsList;
     @FXML private Button createButton;
     @FXML private TextField nameField;
@@ -25,63 +25,80 @@ public class CreateOfferController {
     @FXML private TextField typeOfRealty;
     @FXML private Label successLabel;
     @FXML private TextField adressField;
+    @FXML private Label commissionLabel;
+    @FXML private Button countButton;
 
     DBHandler dbHandler;
     ObservableList realtors = FXCollections.observableArrayList();
+
+    /**
+     * preloading
+     * @param user current user
+     */
     public void initData(User user) {
         nameField.appendText(user.getName());
         this.user = user;
-        phoneField.appendText(user.getPhone());
     }
+    /**
+     * init for controller
+     */
     public void initialize() throws SQLException {
-        dbHandler = new DBHandler();
+        dbHandler = DBHandler.getDBHandler();
         ResultSet resultSet = dbHandler.querry("Select * from " + Constants.REALTOR_TABLE);
         while (resultSet.next()) {
             realtors.add(resultSet.getString("id") + ") " + resultSet.getString("firstname")
-                    + " " + resultSet.getString("patronymic"));
-        }
+                    + " " + resultSet.getString("patronymic")); }
         realtorsList.setItems(realtors);
-        createButton.setOnAction(event -> {
-            String realtor = null;
-            dbHandler = new DBHandler();
-            String name = nameField.getText().trim();
-            String phone = phoneField.getText().trim();
-            String realty = typeOfRealty.getText().trim();
-            String address = adressField.getText().trim();
+
+
+        countButton.setOnAction(event -> {
+        if (!priceField.getText().trim().equals("") && realtorsList.getSelectionModel().getSelectedItem()!= null){
+            realtor = realtorsList.getSelectionModel().getSelectedItem().toString();
+            String realtorId = realtor.substring(0,realtor.indexOf(")"));
             try {
-                realtor = realtorsList.getSelectionModel().getSelectedItem().toString().trim();
-            } catch (Exception e) {
-                successLabel.setText("Выберите риэлтора"); }
-            String price = priceField.getText().trim();
-            String success = isFill(name, realtor, phone, realty, price, address);
-            System.out.println(success);
-            if (success.equals("Успех")){
-                int priceInt = Integer.parseInt(price);
-                Offer offer = new Offer(user.getId(), phone, realty, priceInt, realtor.substring(realtor.indexOf(")")+2),
-                        Integer.parseInt(realtor.substring(0,realtor.indexOf(")"))), address);
-                System.out.println(realtor.substring(realtor.indexOf(")"))+" "+realtor.substring(0,realtor.indexOf(")")));
-                dbHandler.addOffer(offer);
+                resultSet.afterLast();
+                while (resultSet.previous()) {
+                    if (resultSet.getString("id").equals(realtorId)) {
+                        System.out.println("1");
+                        int comission = resultSet.getInt("comission") * Integer.parseInt(priceField.getText());
+                        commissionLabel.setText(String.valueOf(comission/100));
+                        break;
+                    }
+                }
+            } catch (SQLException throwables) {
+                commissionLabel.setText("Произошла ошибка");
+                throwables.printStackTrace();
             }
-            else {
-                successLabel.setText(success);
+            catch (NumberFormatException e){
+                commissionLabel.setText("Укажите цену \n цифрами");
             }
+        }
+        else {
+            commissionLabel.setText("Заполните поля"); }
         });
     }
-    public String isFill (String name, String realtor, String phone, String realty, String price, String address){
-        dbHandler = new DBHandler();
-        	if (realtor != null && !realtor.equals("")){
-            	if (name.equals("") || phone.equals("") || realty.equals("") || price.equals("") || address.equals("")) {
-                	return("Заполните поля!"); }
-            	else {
-            	    try {
-                	int priceInt = Integer.parseInt(price);}
-            	    catch (Exception e){
-            	        return "Укажите цену цифрами"; }
-                	return("Успех"); }
-            	}
-        	else {
-            	return("Выберите риэлтора");
-        	}
+
+    /**
+     * check for fields filled
+     * @param name
+     * @param realtor
+     * @param realty
+     * @param price
+     * @param address
+     * @return
+     */
+    public String isFill (String name, String realtor, String realty, String price, String address){
+        dbHandler = DBHandler.getDBHandler();
+        if (!(realtor != null && !realtor.equals("")))
+            return ("Выберите риэлтора");
+        if (name.equals("") || realty.equals("") || price.equals("") || address.equals(""))
+            return("Заполните поля!");
+        else {
+            try {Integer.parseInt(price);
+            }catch (Exception e){
+                return "Укажите цену цифрами"; }
+            return("Успех");
+        }
     }
 }
 

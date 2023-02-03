@@ -12,28 +12,21 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class NewRealtor {
-    @FXML
-    private Button backButton;
-    @FXML
-    private TextField comission;
-    @FXML
-    private Button createButton;
-    @FXML
-    private TextField firstNameField;
-    @FXML
-    private TextField lastNameField;
-    @FXML
-    private TextField loginField;
-    @FXML
-    private TextField passwordField;
-    @FXML
-    private TextField patronymicField;
-    @FXML
-    private Label successLabel;
-
+    @FXML private Button backButton;
+    @FXML private TextField comission;
+    @FXML private Button createButton;
+    @FXML private TextField firstNameField;
+    @FXML private TextField lastNameField;
+    @FXML private TextField loginField;
+    @FXML private TextField passwordField;
+    @FXML private TextField patronymicField;
+    @FXML private Label successLabel;
+    /**
+     * init for controller
+     */
     public void initialize() {
         createButton.setOnAction(event -> {
-            DBHandler dbHandler = new DBHandler();
+            DBHandler dbHandler = DBHandler.getDBHandler();
             String firstName = firstNameField.getText();
             String lastName = lastNameField.getText();
             String patronymic = patronymicField.getText();

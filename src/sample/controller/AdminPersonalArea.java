@@ -1,99 +1,85 @@
 package sample.controller;
 
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TableView;
-import javafx.util.Callback;
 import sample.Constants;
 import sample.DBHandler;
 import sample.Main;
 import sample.Swap;
 
 import java.io.IOException;
-import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Map;
 
 public class AdminPersonalArea {
-    private String needQuerry, offerQuerry;
+    String querry;
     private DBHandler dbHandler;
-    private ObservableList<ObservableList> data;
-    @FXML private TableView<ObservableList> listTable;
-    @FXML private Button newRealtorBtn;
-    @FXML private Button showRealtorBtn;
-    @FXML private Button showTaskButton;
-    @FXML private Button showUserBtn;
+    @FXML private TableView<ObservableList> dealTable;
     @FXML private Button deleteBtn;
     @FXML private Button exitBtn;
-    @FXML private Button showDealsBtn;
-    String querry = "Select * from ";
+    @FXML private TableView<ObservableList> needTable;
+    @FXML private Button newRealtorBtn;
+    @FXML private TableView<ObservableList> offerTable;
+    @FXML private TableView<ObservableList> realtorTable;
+    @FXML private TableView<ObservableList> userTable;
+    @FXML private TabPane tablePane;
+    String dealquerry;
+    String offerquerry;
+    String simpleQuerry = "Select * from ";
     String table = "users";
+    String needquerry;
+
+    /**
+     * init for controller
+     */
     public void initialize(){
-        showUserBtn.setOnAction(event ->{
-            try {
-                table = Constants.USER_TABLE;
-                Main.fill(querry + table, listTable);
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
-        });
-        showDealsBtn.setOnAction(event -> {
-            table = Constants.DEAL_TABLE;
-            String dealquerry = "select id, realty, price, offerer, needer, realtor from "+ table;
-            try{
-                Main.fill(dealquerry, listTable);
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
-        });
-        showRealtorBtn.setOnAction(event -> {
-            table = Constants.REALTOR_TABLE;
-            try{
-                Main.fill(querry+table, listTable);
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
-        });
-        showTaskButton.setOnAction(event -> {
-            if (showTaskButton.getText().equals("Показать предложения")){
-                table = Constants.OFFER_TABLE;
-                showTaskButton.setText("Показать потребности");
-            }
-            else {
-                table = Constants.NEED_TABLE;
-                showTaskButton.setText("Показать предложения");
-            }
-            try {
-                Main.fill(querry+table, listTable);
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
-        });
+        Map<String, TableView<ObservableList>> map = Map.of("users", userTable, "offers", offerTable, "needs", needTable, "realtor", realtorTable, "deals", dealTable);
+        dealquerry = "select id, realty as недвижимость, price as цена, " +
+                "(SELECT concat (username, ' ',phone) FROM users WHERE offererid = id) as оферент, " +
+                "(SELECT concat (username, ' ',phone) FROM users WHERE neederid = id) as заказчик, " +
+                "(SELECT concat (firstname, ' ',lastname) FROM realtor WHERE id = realtorid) as риелтор, " +
+                "address as адрес from deals";
+        offerquerry = "SELECT id, (SELECT username FROM users WHERE clientid = id) as клиент, " +
+                "(SELECT phone FROM users WHERE clientid = id) as 'номер тел', realty as недвижимость, " +
+                "(SELECT concat (firstname, ' ',lastname) FROM realtor WHERE id = realtorid) as риелтор, " +
+                "address as адрес, price as цена FROM offers";
+        needquerry = "SELECT id, (SELECT username FROM users WHERE clientid = id) as клиент, " +
+                "(SELECT phone FROM users WHERE clientid = id) as 'номер тел', realty as недвижимость, " +
+                "(SELECT concat (firstname, ' ',lastname) FROM realtor WHERE id = realtorid) as риелтор," +
+                " address as адрес, minprice as 'мин. цена', maxprice as 'макс. цена' FROM needs";
+        fillTables();
         deleteBtn.setOnAction(event ->{
-            ObservableList selected = listTable.getSelectionModel().getSelectedItem();
-            listTable.getItems().remove(selected);
+            TableView<ObservableList> current = map.get(tablePane.getSelectionModel().getSelectedItem().getId());
+            ObservableList selected = current.getSelectionModel().getSelectedItem();
+            current.getItems().remove(selected);
             String id = String.valueOf(selected.get(0));
-            dbHandler = new DBHandler();
-                dbHandler.deleteRow(table, id);
+            dbHandler = DBHandler.getDBHandler();
+            dbHandler.deleteRow(tablePane.getSelectionModel().getSelectedItem().getId(), id);
         });
         exitBtn.setOnAction(event ->{
             exitBtn.getScene().getWindow().hide();
-            try {
-                Swap.openAnotherWindow("view/authorization.fxml");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            Swap.openAnotherWindow("view/authorization.fxml");
         });
         newRealtorBtn.setOnAction(event ->{
-            try {
-                Swap.openAnotherWindow("view/newRealtor.fxml");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            Swap.openAnotherWindow("view/newRealtor.fxml");
         });
+    }
+
+    /**
+     * Method for base filled Tables
+     */
+    public void fillTables(){
+        try {
+            Main.fill(needquerry, needTable);
+            Main.fill(offerquerry, offerTable);
+            Main.fill(dealquerry, dealTable);
+            Main.fill(simpleQuerry + "users", userTable);
+            Main.fill(simpleQuerry + "realtor", realtorTable);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
